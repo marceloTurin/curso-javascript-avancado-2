@@ -10,7 +10,9 @@ class NegociacaoController {
 		this._inputData = $("#data");
 		this._inputQuantidade = $("#quantidade");
 		this._inputValor = $("#valor");
-		this._listaNegociacoes = new ListaNegociacoes();
+		this._listaNegociacoes = new ListaNegociacoes(function(model){
+			this._negociacoesView.update(this._listaNegociacoes);
+		});
 
 		//Seleciona a div onde será criado o model da view
 		this._negociacoesView = new NegociacoesView($("#negociacoesView"));
@@ -25,7 +27,6 @@ class NegociacaoController {
 
 	apaga(){
 		this._listaNegociacoes.esvazia();
-		this._negociacoesView.update(this._listaNegociacoes);
 		this._mensagem.texto = 'Negociações apagada com sucesso';
 		this._mensagemView.update(this._mensagem);
 	}
@@ -55,8 +56,6 @@ class NegociacaoController {
 		//Adiciona as negociacoes na Lista de Negociações da Classe ListaNegociacoes
 		this._listaNegociacoes.adicionaLista(this._criaNegociacao());
 
-		//Atualiza a View de Negociações
-		this._negociacoesView.update(this._listaNegociacoes);
 
 		this._mensagem.texto = 'Negociação adicionada com sucesso';
 		this._mensagemView.update(this._mensagem);
