@@ -23,6 +23,13 @@ class NegociacaoController {
 		this._mensagemView.update(this._mensagem);
 	}
 
+	apaga(){
+		this._listaNegociacoes.esvazia();
+		this._negociacoesView.update(this._listaNegociacoes);
+		this._mensagem.texto = 'Negociações apagada com sucesso';
+		this._mensagemView.update(this._mensagem);
+	}
+
 	//Pega as informações do formulario e cria uma negociação da classe Negociacao
 	_criaNegociacao(){
 		return new Negociacao(
