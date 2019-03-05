@@ -66,15 +66,15 @@
     <script>
         let negociacao = new Proxy(new Negociacao(new Date(),1,100),{
 
-            //target objeto original,prop propriedade acessada, receiver referencia do proxy
-           get : function(target, prop, receiver){
-                console.log(` a propriedade "${prop}" interceptada`);
-                return Reflect.get(target,prop,receiver);
+            //target objeto original,prop propriedade alterada,value o valor colacado, receiver referencia do proxy
+           set : function(target, prop, value, receiver){
+                console.log(`valor anterior: ${target[prop]}, novo valor : ${value}`);
+                return Reflect.set(target,prop,value,receiver);
            }
         })
 
-        console.log(negociacao.quantidade);
-        console.log(negociacao.valor);
+        negociacao._quantidade = 10;
+        negociacao._valor = 100;
     </script>
     
 </body>
