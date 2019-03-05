@@ -11,25 +11,30 @@ class NegociacaoController {
 		this._inputQuantidade = $("#quantidade");
 		this._inputValor = $("#valor");
 		
-		/*this._listaNegociacoes = new ListaNegociacoes(model=>
-			this._negociacoesView.update(this._listaNegociacoes)
-		);*/
+		//Cria a proxy da lista de negociacao chamando a view quando for chamado o adicionaLista ou o esvazia
+		this._listaNegociacoes = ProxyFactory.create(
+			new ListaNegociacoes(),
+			['adicionaLista','esvazia'], model=>
+				this._negociacoesView.update(model));
 
 		//Seleciona a div onde será criado o model da view
 		this._negociacoesView = new NegociacoesView($("#negociacoesView"));
-
 		//Atualiza a div conforme a quantidade de negociações na lista
 		this._negociacoesView.update(this._listaNegociacoes);
 
-		this._mensagem = new Mensagem();
-		this._mensagemView = new MensagemView($('#mensagemView'))
+		this._mensagem = ProxyFactory.create(
+			new Mensagem(),
+			['texto'], model =>
+				this._mensagemView.update('model'));
+
+		this._mensagemView = new MensagemView($('#mensagemView'));
 		this._mensagemView.update(this._mensagem);
+		
 	}
 
 	apaga(){
 		this._listaNegociacoes.esvazia();
 		this._mensagem.texto = 'Negociações apagada com sucesso';
-		this._mensagemView.update(this._mensagem);
 	}
 
 	//Pega as informações do formulario e cria uma negociação da classe Negociacao
@@ -56,10 +61,7 @@ class NegociacaoController {
 		
 		//Adiciona as negociacoes na Lista de Negociações da Classe ListaNegociacoes
 		this._listaNegociacoes.adicionaLista(this._criaNegociacao());
-
-
 		this._mensagem.texto = 'Negociação adicionada com sucesso';
-		this._mensagemView.update(this._mensagem);
 
 		//Limpa o formulário
 		this._limpaFormulario();

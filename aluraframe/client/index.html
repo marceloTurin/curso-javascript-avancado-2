@@ -54,6 +54,7 @@
     <script  src ="js/app/views/View.js" type="text/javascript"></script>
     <script  src ="js/app/views/NegociacoesView.js" type="text/javascript"></script>
     <script  src ="js/app/views/MensagemView.js" type="text/javascript"></script>
+    <script  src ="js/app/services/ProxyFactory.js" type="text/javascript"></script>
    
     
     
@@ -63,27 +64,5 @@
         let negociacaoController = new NegociacaoController();
     </script>
 
-    <script>
-        let lista = new Proxy(new ListaNegociacoes(),{
-
-            //target objeto original,prop propriedade acessada,value o valor colacado, receiver referencia do proxy
-           get (target, prop, receiver){
-                //Verifica a propriedade no nosso array e se essa propriedade é uma função
-                if(['adicionaLista','esvazia'].includes(prop) && typeof(target[prop]) == typeof(Function)){
-
-                    //Troca a chamada da função por isso aqui 
-                    return function(){
-                        console.log(`interceptando ${prop}`);
-                        Reflect.apply(target[prop],target,arguments);
-                    }
-                }
-                return Reflect.get(target,prop,receiver)
-           }
-        })
-
-        lista.adicionaLista(new Negociacao(new Date(),1,100))
-       
-    </script>
-    
 </body>
 </html>
