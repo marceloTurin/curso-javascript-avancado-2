@@ -64,17 +64,25 @@
     </script>
 
     <script>
-        let negociacao = new Proxy(new Negociacao(new Date(),1,100),{
+        let lista = new Proxy(new ListaNegociacoes(),{
 
-            //target objeto original,prop propriedade alterada,value o valor colacado, receiver referencia do proxy
-           set : function(target, prop, value, receiver){
-                console.log(`valor anterior: ${target[prop]}, novo valor : ${value}`);
-                return Reflect.set(target,prop,value,receiver);
+            //target objeto original,prop propriedade acessada,value o valor colacado, receiver referencia do proxy
+           get (target, prop, receiver){
+                //Verifica a propriedade no nosso array e se essa propriedade é uma função
+                if(['adicionaLista','esvazia'].includes(prop) && typeof(target[prop]) == typeof(Function)){
+
+                    //Troca a chamada da função por isso aqui 
+                    return function(){
+                        console.log(`interceptando ${prop}`);
+                        Reflect.apply(target[prop],target,arguments);
+                    }
+                }
+                return Reflect.get(target,prop,receiver)
            }
         })
 
-        negociacao._quantidade = 10;
-        negociacao._valor = 100;
+        lista.adicionaLista(new Negociacao(new Date(),1,100))
+       
     </script>
     
 </body>
