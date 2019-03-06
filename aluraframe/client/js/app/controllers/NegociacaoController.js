@@ -57,6 +57,29 @@ class NegociacaoController {
 		//Limpa o formulário
 		this._limpaFormulario();
 		//console.log(this._listaNegociacoes.negociacoes);
-	}	
+	}
+
+	importaNegociacoes(){
+
+		let xhr = new XMLHttpRequest();
+		xhr.open('GET','negociacoes/semana');
+
+		xhr.onreadystatechange = ()=>{
+			if(xhr.readyState == 4){
+				if(xhr.status == 200){
+					console.log('Obtendo as negociações do servidor');
+				}
+				else{
+					console.log('Não foi possivel obter as negociações do servidor');
+				}
+			}
+		}
+
+		xhr.send();
+
+
+	}
+
+	
 
 }
